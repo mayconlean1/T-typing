@@ -22,40 +22,60 @@ function createSpan(char='' , index=''){
 // ###############################
 export default () =>{
 
-  let currentCursor = -1
-  // let lastCursor = -1
-  let currentCharacter
-  let tempNextCharacter = refText[0]
-  let realNextCharacter = refText[0]
+  let cursor = 0
+  let currentChar = ''
 
   function updateInput(){
-    
-    const textarea = document.querySelector('#typing-textarea')
-    const lenIndex = textarea.value.length -1
 
-    if(lenIndex <= refText.length-1){
-      currentCharacter = textarea.value[lenIndex]
-      tempNextCharacter = lenIndex === -1? refText[0] : refText[currentCursor+1] 
-      realNextCharacter = refText[currentCursor+2]
-      currentCursor = lenIndex === -1?  0 : lenIndex
-      // lastCursor= currentCursor
-  
-      const spanChar = document.querySelector(`#char_${currentCursor}`)
+    const hiddenTextarea =document.querySelector('#typing-textarea')
+    const baseTextarea = document.querySelector('.base-textarea')
+
+    try{
+      
+      const spanChar = document.querySelector(`#char_${cursor}`)
       spanChar.classList.remove('bg-green')
       spanChar.classList.remove('bg-red')
+      spanChar.classList.remove('bg-grey')
 
-      if(currentCharacter === tempNextCharacter){
+      cursor = hiddenTextarea.value.length === -1 ? 0 : hiddenTextarea.value.length 
+      let currentHiddenChar = hiddenTextarea.value[hiddenTextarea.value.length -1] 
+      console.log(cursor,  currentChar, currentHiddenChar)
+      if(currentChar === currentHiddenChar){
+        console.log('verde')
         spanChar.classList.add('bg-green')
       }else{
+        console.log('vermelho')
         spanChar.classList.add('bg-red')
       }
-      console.log(lenIndex, currentCharacter , tempNextCharacter , currentCharacter === tempNextCharacter)
-    }else{
-      alert('Concluido')
+      currentChar = baseTextarea.textContent[cursor]
+
+      const nextSpanChar = document.querySelector(`#char_${cursor+1}`)
+      if(nextSpanChar !== null){
+        nextSpanChar.classList.remove('bg-green')
+        nextSpanChar.classList.remove('bg-red')
+        nextSpanChar.classList.remove('bg-grey')
+      }
+
+      if(cursor-1 !== 0){
+        const prevSpanChar = document.querySelector(`#char_${cursor-1}`)
+        
+        if (prevSpanChar !== null){
+          prevSpanChar.classList.remove('bg-grey')
+        }
+      }
+      const currentSpanChar = document.querySelector(`#char_${cursor}`)
+      currentSpanChar.classList.add('bg-grey')
+    }catch{
+      const ckbox = document.querySelector('#checkWrite')
+      const ckboxArea = document.querySelector('.checkbox-area')
+      ckbox.checked = false
+      ckboxArea.hidden = true
+      alert('Finalizado')
     }
   }
 
   useEffect(()=>{
+    updateInput()
     const ckbox = document.querySelector('#checkWrite')
 
     document.addEventListener('keydown',()=>{
@@ -68,7 +88,11 @@ export default () =>{
       if (ckbox.checked){
         tinput.focus()
       }
-      console.table({'lastkey': currentCharacter , 'tempnextkey': tempNextCharacter , 'realnextkey':realNextCharacter })
+      console.table({
+        currentChar , 
+        cursor
+       
+      })
     })
     
   },[])
