@@ -1,3 +1,4 @@
+// npm install @vitalets/google-translate-api
 const translate = require('@vitalets/google-translate-api');
  
 (async ()=>{

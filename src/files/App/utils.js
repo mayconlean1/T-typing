@@ -3,21 +3,23 @@
 let cursor = 0
 let currentChar = ''
 
+const translateInTextarea = initDebounce(2000)
+
 export default {
-    changeStringToArray(refText = ''){
-        const arrayRefText =[]
-        for(let char of refText){
-            arrayRefText.push(char)
-        }
-        return arrayRefText
-    },
-    
-    createSpan(char='' , index=''){
-        const id = `char_${index}`
-        return (<span id={id} className='span-char'>{char}</span>)
-    },
-    
-    updateInput(){
+  changeStringToArray(refText = ''){
+      const arrayRefText =[]
+      for(let char of refText){
+          arrayRefText.push(char)
+      }
+      return arrayRefText
+  },
+  
+  createSpan(char='' , index=''){
+      const id = `char_${index}`
+      return (<span id={id} className='span-char'>{char}</span>)
+  },
+  
+  async updateInput(){
     
     const hiddenTextarea =document.querySelector('#typing-textarea')
     const baseTextarea = document.querySelector('.base-textarea')
@@ -63,6 +65,39 @@ export default {
       ckboxArea.hidden = true
       alert('Finalizado')
     }
-  }
 
+    translateInTextarea({text: hiddenTextarea.value})
+  }
+}
+
+
+function initDebounce(timeOutin=3000){
+
+  let time
+  let processingTranslation = false
+
+  return async (data = {text:'',from:'en',to:'pt'})=>{
+    if(!processingTranslation){
+      processingTranslation = true
+      clearTimeout(time)
+      time = setTimeout(async ()=>{
+        console.log('Traduziu')
+       
+      const res =  await fetch('http://localhost:8080/',{
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: { 
+            "Content-Type": "application/json",
+        },
+      })
+      const resJson = await res.json()
+      const translatedText = resJson.translated_text
+
+      document.querySelector('.translate-area').innerHTML = translatedText
+      console.log('res.body', resJson.translated_text)
+  
+      processingTranslation = false
+      },timeOutin)
+    }
+  }
 }

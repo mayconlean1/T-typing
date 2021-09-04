@@ -33,6 +33,10 @@ export default () =>{
     })
   })
 
+  function openWrapper(){
+    console.log('oi')
+  }
+
   return (
     <>
       <div className='header'>
@@ -54,6 +58,9 @@ export default () =>{
 
         <div className='base-textarea'>
           {mainTextarray.map((char,index)=> createSpan(char,index))}
+        </div>
+        <div className='btn-add-text' onClick={openWrapper()}>
+          Add Text
         </div>
          
       </div>
