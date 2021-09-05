@@ -1,4 +1,4 @@
-:root{
+/* :root{
   --global-width: 80%;
   --paddingTextarea: 0 1rem 0 1rem;
   --borderRadius : 5px;
@@ -18,8 +18,8 @@ body{
   font-size: large;
   /* display: flex;
   align-items: center;
-  justify-content: center; */
-}
+  justify-content: center; 
+} */
 
 .header{
   /* background-color:yellow; */

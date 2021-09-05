@@ -1,11 +1,11 @@
 /* eslint-disable import/no-anonymous-default-export */
-  
+
 let cursor = 0
 let currentChar = ''
 
 const translateInTextarea = initDebounce(2000)
 
-export default {
+const utils = {
   changeStringToArray(refText = ''){
       const arrayRefText =[]
       for(let char of refText){
@@ -19,7 +19,7 @@ export default {
       return (<span id={id} className='span-char'>{char}</span>)
   },
   
-  async updateInput(){
+  async updateInput(handleBool){
     
     const hiddenTextarea =document.querySelector('#typing-textarea')
     const baseTextarea = document.querySelector('.base-textarea')
@@ -59,17 +59,40 @@ export default {
       const currentSpanChar = document.querySelector(`#char_${cursor}`)
       currentSpanChar.classList.add('bg-grey')
     }catch{
-      const ckbox = document.querySelector('#checkWrite')
-      const ckboxArea = document.querySelector('.checkbox-area')
-      ckbox.checked = false
-      ckboxArea.hidden = true
+      // const ckbox = document.querySelector('#checkWrite')
+      // const ckboxArea = document.querySelector('.checkbox-area')
+      // ckbox.checked = false
+      // ckboxArea.hidden = true
+      utils.toggleCheckbox(handleBool, true)
       alert('Finalizado')
     }
 
     translateInTextarea({text: hiddenTextarea.value})
+  },
+
+  toggleCheckbox(handleBool, hiddenCheckboxArea = false){
+    // const ckbox = document.querySelector('#checkWrite')
+    // ckbox.checked = !ckbox.checked
+    console.log(handleBool)
+    if(handleBool != undefined){
+      const [boolCheckbox, setBoolcheckbox] = handleBool.handleBoolCheckbox
+      setBoolcheckbox(!boolCheckbox)
+      const [,ckboxArea] = handleBool.handleBoolCheckboxArea
+      if(hiddenCheckboxArea){
+        ckboxArea( true )
+      }else{
+        ckboxArea( false )
+      }
+    }
+
+    // const ckboxArea = document.querySelector('.checkbox-area')
+  },
+  
+  resetCursor(){
+    cursor = 0
+    currentChar = ''
   }
 }
-
 
 function initDebounce(timeOutin=3000){
 
@@ -101,3 +124,6 @@ function initDebounce(timeOutin=3000){
     }
   }
 }
+
+
+export default utils
