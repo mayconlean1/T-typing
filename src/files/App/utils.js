@@ -4,8 +4,8 @@ let cursor = 0
 let currentChar = ''
 
 const translateInTextarea = initDebounce()
-
 const translatedOptions = initTranslateOptions()
+const handleSpanPosition = inithandleSpanPosition()
 
 const utils = {
   changeStringToArray(refText = ''){
@@ -60,6 +60,8 @@ const utils = {
       }
       const currentSpanChar = document.querySelector(`#char_${cursor}`)
       currentSpanChar.classList.add('bg-grey')
+
+      utils.moveScrollBaseTextArea()
     }catch{
       
       utils.toggleCheckbox(handleBool, true)
@@ -136,7 +138,35 @@ const utils = {
   },
 
   moveScrollBaseTextArea(){
+
+    const textareaPosition = document.querySelector('.base-textarea').getBoundingClientRect().top
+
+    const currentSpan = document.getElementById(`char_${cursor}`)
+    const spanPosition = currentSpan.getBoundingClientRect().top
+
+    console.table(
+      textareaPosition, spanPosition,)
     
+    const moveDivScroll = spanPosition - (textareaPosition + 12)
+    const controlSpanPosition = handleSpanPosition(moveDivScroll)
+    // if(moveDivScroll !== 0 ){
+      // controlSpanPosition = handleSpanPosition(moveDivScroll)
+
+    // }
+
+    const textArea = document.querySelector('.base-textarea')
+
+    console.table(
+      textareaPosition, spanPosition, moveDivScroll, controlSpanPosition   )
+    textArea.scrollTo(
+      0, controlSpanPosition
+      // {
+      //   top: controlSpanPosition ,
+      //   left: 0,
+      //   behavior: 'smooth'
+      // }
+    )
+
   }
   
 }
@@ -196,6 +226,33 @@ function initTranslateOptions(){
       option['from'] = opt['from']
       option['to'] = opt['to']
     }
+  }
+}
+
+
+function inithandleSpanPosition(){
+  let currentPosition
+  let nextPosition
+  let pos = 0
+ 
+  return (movePosition)=>{
+    if(currentPosition === undefined){
+
+      currentPosition = movePosition
+      pos += movePosition
+
+    }else{
+      if  (movePosition !== currentPosition   && 
+          movePosition !==nextPosition        ){
+
+          pos += movePosition
+          currentPosition = pos
+      }
+
+      nextPosition = movePosition + pos
+
+    }
+    return currentPosition 
   }
 }
 

@@ -50,7 +50,7 @@ body{
 
 .base-textarea{
   background-color:white;
-  height: 15rem;
+  height: 5rem;
   width: var(--global-width);
   overflow: auto;
   padding:var(--paddingTextarea);
