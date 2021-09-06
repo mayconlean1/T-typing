@@ -128,6 +128,15 @@ const utils = {
     const config = {'from' : valueFrom, 'to': valueTo}
 
     translatedOptions.set(config)
+  },
+
+  moveScrollTranslateArea(){
+    const scrollHeight = document.querySelector('.translate-area').scrollHeight
+    document.querySelector('.translate-area').scroll(0,scrollHeight)
+  },
+
+  moveScrollBaseTextArea(){
+    
   }
   
 }

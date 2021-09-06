@@ -11,25 +11,18 @@ const {
     createSpan,
     updateInput,
     resetTextCursor,
-    setTranslateConfig
-    // toggleCheckbox
+    setTranslateConfig,
+    moveScrollTranslateArea
+   
   } = utils
 
-// const refText = `It seems like.`
-// const mainTextarray = changeStringToArray(refText)
-
-// ###############################
 export default () =>{
 
-  // const handleCursor = {
-  //   cursor : useState(0),
-  //   currentChar : useState('')
-  // }
    
   const [wrapper , setWrapper] = useState(false)
 
-  // const [refText , setRefText] = useState(`It seems like the world is growing more and more interested in Juliette Freire.`)
-  const [refText , setRefText] = useState(``)
+  const [refText , setRefText] = useState(`It seems like the world is growing more and more interested in Juliette Freire, an anonymous woman who has been gaining lots of attention.It seems like the world is growing more and more interested in Juliette Freire, an anonymous woman who has been gaining lots of attention.It seems like the world is growing more and more interested in Juliette Freire, an anonymous woman who has been gaining lots of attention.
+  `)
 
   const handleBoolCheckbox = useState(true)
   const [boolCheckbox, setBoolCheckbox] = handleBoolCheckbox
@@ -79,6 +72,7 @@ export default () =>{
     handleBool = {
       handleBoolCheckbox,handleBoolCheckboxArea
     }
+    moveScrollTranslateArea()
     return updateInput(handleBool)
   }
 
@@ -107,7 +101,7 @@ export default () =>{
       <div className='main'>
 
         <div className='translate-area'>
-          {/* It seems like the world is growing more and more interested in Juliette Freire, an anonymous woman who has been gaining lots of attention.It seems like the world is growing more and more interested in Juliette Freire, an anonymous woman who has been gaining lots of attention.It seems like the world is growing more and more interested in Juliette Freire, an anonymous woman who has been gaining lots of attention. */}
+          It seems like the world is growing more and more interested in Juliette Freire, an anonymous woman who has been gaining lots of attention.It seems like the world is growing more and more interested in Juliette Freire, an anonymous woman who has been gaining lots of attention.It seems like the world is growing more and more interested in Juliette Freire, an anonymous woman who has been gaining lots of attention.
         </div>
 
         <div className='base-textarea'>
