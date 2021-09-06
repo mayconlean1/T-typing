@@ -15,17 +15,17 @@ export default ( {toggleWrapper, changeText} )=>{
                     <div className='translation-option'>
                         Traduzir para:
                         <br/>
-                        <select className='select-lang'>
-                            <option>Inglês</option>
-                            <option selected>Português</option>
+                        <select className='select-lang translateTo'>
+                            <option value='en'>Inglês</option>
+                            <option value='pt' selected>Português</option>
                         </select>
                     </div>
                     <div className='translation-option'>
                         Texto em: 
                         <br/>
-                        <select className='select-lang'>
-                            <option>Inglês</option>
-                            <option>Português</option>
+                        <select className='select-lang translateFrom'>
+                            <option value='en'>Inglês</option>
+                            <option value='pt'>Português</option>
                         </select>
                     </div>
                     

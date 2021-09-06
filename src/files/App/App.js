@@ -10,8 +10,9 @@ const {
     changeStringToArray,
     createSpan,
     updateInput,
-    resetCursor,
-    toggleCheckbox
+    resetTextCursor,
+    setTranslateConfig
+    // toggleCheckbox
   } = utils
 
 // const refText = `It seems like.`
@@ -20,10 +21,10 @@ const {
 // ###############################
 export default () =>{
 
-  const handleCursor = {
-    cursor : useState(0),
-    currentChar : useState('')
-  }
+  // const handleCursor = {
+  //   cursor : useState(0),
+  //   currentChar : useState('')
+  // }
    
   const [wrapper , setWrapper] = useState(false)
 
@@ -31,14 +32,15 @@ export default () =>{
   const [refText , setRefText] = useState(``)
 
   const handleBoolCheckbox = useState(true)
-  const [boolCheckbox] = handleBoolCheckbox
+  const [boolCheckbox, setBoolCheckbox] = handleBoolCheckbox
 
   const handleBoolCheckboxArea = useState(false)
   const [boolCheckboxArea] = handleBoolCheckboxArea
 
-  let handleBool = {}
+  let handleBool = { handleBoolCheckbox,handleBoolCheckboxArea}
   
   useEffect(()=>{
+    
     updateInput()
     const ckbox = document.querySelector('#checkWrite')
 
@@ -58,17 +60,18 @@ export default () =>{
   })
 
   function changeText(){
+    
     handleBool = {
       handleBoolCheckbox,handleBoolCheckboxArea
     }
+
+    resetTextCursor(handleBool)
+    
     const textWrapper = document.querySelector('.textarea-wrapper').value
-
-    console.log(textWrapper.length)
-
-    toggleCheckbox( handleBool, false)
-    resetCursor()
-
     setRefText(textWrapper)
+
+    setTranslateConfig()
+    
     toggleWrapper()
   }
 
@@ -79,23 +82,12 @@ export default () =>{
     return updateInput(handleBool)
   }
 
-  // function toggleCheckbox(hiddenCheckboxArea = false){
-  //   const ckbox = document.querySelector('#checkWrite')
-  //   ckbox.checked = !ckbox.checked
+  function closerToggleChackbox(){
+    setBoolCheckbox(!boolCheckbox)
+  }
 
-  //   const ckboxArea = document.querySelector('.checkbox-area')
-  //   if(hiddenCheckboxArea){
-  //     ckboxArea.hidden = true
-  //   }else{
-  //     ckboxArea.hidden = false
-  //   }
-  // }
-      
   function toggleWrapper(){
-    handleBool = {
-      handleBoolCheckbox,handleBoolCheckboxArea
-    }
-    toggleCheckbox(handleBool , false)
+    !wrapper? setBoolCheckbox(false) : setBoolCheckbox(true)
     setWrapper ( !wrapper)
   }
 
@@ -107,7 +99,7 @@ export default () =>{
             T typing
           </h1>
           <div className='checkbox-area' hidden= {boolCheckboxArea}>
-            <input type='checkbox' id='checkWrite' checked = {boolCheckbox}/>Ativar digitação
+            <input type='checkbox' id='checkWrite' onClick={closerToggleChackbox} checked = {boolCheckbox}/>Ativar digitação
             <textarea  id='typing-textarea' onChange={closerUpdateInput} />
           </div>
         </div>

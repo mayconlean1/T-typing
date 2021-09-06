@@ -3,7 +3,9 @@
 let cursor = 0
 let currentChar = ''
 
-const translateInTextarea = initDebounce(2000)
+const translateInTextarea = initDebounce()
+
+const translatedOptions = initTranslateOptions()
 
 const utils = {
   changeStringToArray(refText = ''){
@@ -59,52 +61,92 @@ const utils = {
       const currentSpanChar = document.querySelector(`#char_${cursor}`)
       currentSpanChar.classList.add('bg-grey')
     }catch{
-      // const ckbox = document.querySelector('#checkWrite')
-      // const ckboxArea = document.querySelector('.checkbox-area')
-      // ckbox.checked = false
-      // ckboxArea.hidden = true
+      
       utils.toggleCheckbox(handleBool, true)
-      alert('Finalizado')
+      // alert('Finalizado')
     }
+    const translateConf = {...translatedOptions.get(), text: hiddenTextarea.value}
 
-    translateInTextarea({text: hiddenTextarea.value})
+    // console.log(translateConf)
+    await translateInTextarea(translateConf, 
+      // translateInTextarea
+      )
   },
 
   toggleCheckbox(handleBool, hiddenCheckboxArea = false){
-    // const ckbox = document.querySelector('#checkWrite')
-    // ckbox.checked = !ckbox.checked
-    console.log(handleBool)
-    if(handleBool != undefined){
-      const [boolCheckbox, setBoolcheckbox] = handleBool.handleBoolCheckbox
-      setBoolcheckbox(!boolCheckbox)
+    
+    if(handleBool !== undefined){
+
       const [,ckboxArea] = handleBool.handleBoolCheckboxArea
       if(hiddenCheckboxArea){
         ckboxArea( true )
       }else{
         ckboxArea( false )
       }
+
+      const [boolCheckbox, setBoolcheckbox] = handleBool.handleBoolCheckbox
+      setBoolcheckbox(!boolCheckbox)
+    }
+  },
+
+  resetTextCursor(handleBool){
+
+    resetCursor()
+    clearHiddenTextarea()
+    resetCursorColors()
+    utils.toggleCheckbox(handleBool)
+
+    function resetCursor(){
+      cursor = 0
+      currentChar = ''
     }
 
-    // const ckboxArea = document.querySelector('.checkbox-area')
+    function clearHiddenTextarea(){
+      const hiddenTextarea = document.querySelector('#typing-textarea')
+      hiddenTextarea.value = ''
+    }
+
+    function resetCursorColors(){
+      const spans = document.querySelectorAll('span')
+      spans.forEach(span=>{
+      span.classList.remove('bg-green')
+      span.classList.remove('bg-red')
+      span.classList.remove('bg-grey')
+    })
+    }
   },
-  
-  resetCursor(){
-    cursor = 0
-    currentChar = ''
+
+  setTranslateConfig(){
+
+    const indexTo = document.querySelector('.translateTo').selectedIndex
+    const valueTo = document.querySelector('.translateTo')[indexTo].value
+
+    const indexFrom = document.querySelector('.translateFrom').selectedIndex
+    const valueFrom = document.querySelector('.translateFrom')[indexFrom].value
+
+    // config={'from':'en', 'to':'pt'}
+    const config = {'from' : valueFrom, 'to': valueTo}
+
+    translatedOptions.set(config)
   }
+  
 }
 
-function initDebounce(timeOutin=3000){
+function initDebounce( timeout=200 ){
 
+  let processedText
+  let currentText
   let time
   let processingTranslation = false
 
-  return async (data = {text:'',from:'en',to:'pt'})=>{
-    if(!processingTranslation){
+  return async (data = {text:'',from:'en',to:'pt'} )=>{
+    currentText = data.text
+    clearTimeout(time)
+
+    if(!processingTranslation && processedText !== currentText){
+      processedText = currentText
       processingTranslation = true
-      clearTimeout(time)
-      time = setTimeout(async ()=>{
-        console.log('Traduziu')
+      
        
       const res =  await fetch('http://localhost:8080/',{
         method: "POST",
@@ -117,13 +159,35 @@ function initDebounce(timeOutin=3000){
       const translatedText = resJson.translated_text
 
       document.querySelector('.translate-area').innerHTML = translatedText
-      console.log('res.body', resJson.translated_text)
-  
+    
+      time = setTimeout( async ()=>{
+        if(processedText !== currentText){
+          const rData = {...data, text: currentText}
+          await translateInTextarea(rData)
+        }
+        
+      },timeout)
+
       processingTranslation = false
-      },timeOutin)
+      
     }
   }
 }
 
+function initTranslateOptions(){
+  const option = {
+    'from' : 'en',
+    'to': 'pt'
+  }
+  return{
+    get(){
+      return option
+    },
+    set(opt={from:'', to: ''}){
+      option['from'] = opt['from']
+      option['to'] = opt['to']
+    }
+  }
+}
 
 export default utils
