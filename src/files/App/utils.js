@@ -7,6 +7,8 @@ const translateInTextarea = initDebounce()
 const translatedOptions = initTranslateOptions()
 const handleSpanPosition = inithandleSpanPosition()
 
+const handleTimeController = initTimeController()
+
 const utils = {
   changeStringToArray(refText = ''){
       const arrayRefText =[]
@@ -39,8 +41,11 @@ const utils = {
       if(currentChar === currentHiddenChar){
         
         spanChar.classList.add('bg-green')
+
       }else{
+
         spanChar.classList.add('bg-red')
+
       }
       currentChar = baseTextarea.textContent[cursor]
 
@@ -61,11 +66,17 @@ const utils = {
       const currentSpanChar = document.querySelector(`#char_${cursor}`)
       currentSpanChar.classList.add('bg-grey')
 
-      utils.moveScrollBaseTextArea()
+      moveScrollBaseTextArea()
     }catch{
       
-      utils.toggleCheckbox(handleBool, true)
-      // alert('Finalizado')
+      toggleCheckbox(handleBool, true)
+
+      utils.timeController.end()
+      // console.log( utils.timeController.totalTime() )
+
+      const divTime = document.querySelector('.time-area')
+      divTime.innerHTML = `Finalizado em ${(utils.timeController.totalTime()/1000).toFixed(1)} segundos`
+      // alert(`Finalizado em ${(utils.timeController.totalTime()/1000).toFixed(1)} segundos`)
     }
     const translateConf = {...translatedOptions.get(), text: hiddenTextarea.value}
 
@@ -75,28 +86,12 @@ const utils = {
       )
   },
 
-  toggleCheckbox(handleBool, hiddenCheckboxArea = false){
-    
-    if(handleBool !== undefined){
-
-      const [,ckboxArea] = handleBool.handleBoolCheckboxArea
-      if(hiddenCheckboxArea){
-        ckboxArea( true )
-      }else{
-        ckboxArea( false )
-      }
-
-      const [boolCheckbox, setBoolcheckbox] = handleBool.handleBoolCheckbox
-      setBoolcheckbox(!boolCheckbox)
-    }
-  },
-
   resetTextCursor(handleBool){
 
     resetCursor()
     clearHiddenTextarea()
     resetCursorColors()
-    utils.toggleCheckbox(handleBool)
+    toggleCheckbox(handleBool)
 
     function resetCursor(){
       cursor = 0
@@ -137,38 +132,9 @@ const utils = {
     document.querySelector('.translate-area').scroll(0,scrollHeight)
   },
 
-  moveScrollBaseTextArea(){
-
-    const textareaPosition = document.querySelector('.base-textarea').getBoundingClientRect().top
-
-    const currentSpan = document.getElementById(`char_${cursor}`)
-    const spanPosition = currentSpan.getBoundingClientRect().top
-
-    console.table(
-      textareaPosition, spanPosition,)
-    
-    const moveDivScroll = spanPosition - (textareaPosition + 12)
-    const controlSpanPosition = handleSpanPosition(moveDivScroll)
-    // if(moveDivScroll !== 0 ){
-      // controlSpanPosition = handleSpanPosition(moveDivScroll)
-
-    // }
-
-    const textArea = document.querySelector('.base-textarea')
-
-    console.table(
-      textareaPosition, spanPosition, moveDivScroll, controlSpanPosition   )
-    textArea.scrollTo(
-      0, controlSpanPosition
-      // {
-      //   top: controlSpanPosition ,
-      //   left: 0,
-      //   behavior: 'smooth'
-      // }
-    )
-
-  }
+  timeController:handleTimeController
   
+ 
 }
 
 function initDebounce( timeout=200 ){
@@ -229,7 +195,6 @@ function initTranslateOptions(){
   }
 }
 
-
 function inithandleSpanPosition(){
   let currentPosition
   let nextPosition
@@ -253,6 +218,90 @@ function inithandleSpanPosition(){
 
     }
     return currentPosition 
+  }
+}
+
+function moveScrollBaseTextArea(){
+
+  const textareaPosition = document.querySelector('.base-textarea').getBoundingClientRect().top
+
+  const currentSpan = document.getElementById(`char_${cursor}`)
+  const spanPosition = currentSpan.getBoundingClientRect().top
+
+  // console.table(
+  //   textareaPosition, spanPosition,)
+  
+  const moveDivScroll = spanPosition - (textareaPosition + 12)
+  const controlSpanPosition = handleSpanPosition(moveDivScroll)
+  // if(moveDivScroll !== 0 ){
+    // controlSpanPosition = handleSpanPosition(moveDivScroll)
+
+  // }
+
+  const textArea = document.querySelector('.base-textarea')
+
+  // console.table(
+  //   textareaPosition, spanPosition, moveDivScroll, controlSpanPosition   )
+  textArea.scrollTo(
+    0, controlSpanPosition
+    // {
+    //   top: controlSpanPosition ,
+    //   left: 0,
+    //   behavior: 'smooth'
+    // }
+  )
+
+}
+
+function toggleCheckbox(handleBool, hiddenCheckboxArea = false){
+  
+  if(handleBool !== undefined){
+
+    const [,ckboxArea] = handleBool.handleBoolCheckboxArea
+    if(hiddenCheckboxArea){
+      ckboxArea( true )
+    }else{
+      ckboxArea( false )
+    }
+
+    const [boolCheckbox, setBoolcheckbox] = handleBool.handleBoolCheckbox
+    setBoolcheckbox(!boolCheckbox)
+  }
+}
+
+function initTimeController(){
+
+  let initTime
+  let endTime
+
+  return{
+    getInitTime(){
+      return initTime
+    },
+    getEndTime(){
+      return endTime
+    },
+    reset(){
+      initTime = undefined
+      endTime = undefined
+      const divTime = document.querySelector('.time-area')
+      divTime.innerHTML = ''
+    },
+    start(){
+      if(initTime === undefined){
+        initTime = Date.now()
+      }
+    },
+    end(){
+      if(endTime === undefined){
+        endTime = Date.now()
+      }
+    },
+    totalTime(){
+      if(initTime !== undefined && endTime !== undefined){
+        return endTime - initTime
+      }
+    }
   }
 }
 

@@ -13,6 +13,7 @@ const {
     resetTextCursor,
     setTranslateConfig,
     moveScrollTranslateArea,
+    timeController
   } = utils
 
 export default () =>{
@@ -20,8 +21,7 @@ export default () =>{
    
   const [wrapper , setWrapper] = useState(false)
 
-  const [refText , setRefText] = useState(`It seems like the world is growing more and more interested in Juliette Freire, an anonymous woman who has been gaining lots of attention.It seems like the world is growing more and more interested in Juliette Freire, an anonymous woman who has been gaining lots of attention.It seems like the world is growing more and more interested in Juliette Freire, an anonymous woman who has been gaining lots of attention.It seems like the world is growing more and more interested in Juliette Freire, an anonymous woman who has been gaining lots of attention.It seems like the world is growing more and more interested in Juliette Freire, an anonymous woman who has been gaining lots of attention.It seems like the world is growing more and more interested in Juliette Freire, an anonymous woman who has been gaining lots of attention.It seems like the world is growing more and more interested in Juliette Freire, an anonymous woman who has been gaining lots of attention.It seems like the world is growing more and more interested in Juliette Freire, an anonymous woman who has been gaining lots of attention.It seems like the world is growing more and more interested in Juliette Freire, an anonymous woman who has been gaining lots of attention.
-  `)
+  const [refText , setRefText] = useState(`It seems like the world`)
 
   const handleBoolCheckbox = useState(true)
   const [boolCheckbox, setBoolCheckbox] = handleBoolCheckbox
@@ -56,6 +56,7 @@ export default () =>{
     handleBool = {
       handleBoolCheckbox,handleBoolCheckboxArea
     }
+    timeController.reset()
 
     resetTextCursor(handleBool)
     
@@ -68,10 +69,14 @@ export default () =>{
   }
 
   function closerUpdateInput (){
+
     handleBool = {
       handleBoolCheckbox,handleBoolCheckboxArea
     }
+    timeController.start()
+    
     moveScrollTranslateArea()
+
     return updateInput(handleBool)
   }
 
@@ -109,7 +114,7 @@ export default () =>{
         <div className='btn-add-text' onClick={toggleWrapper}>
           Add Text
         </div>
-      
+        <div className='time-area'>tempo</div>
       </div>
         {wrapper? 
         <Wrapper toggleWrapper = {toggleWrapper} changeText= {changeText}/> : <div/>}
