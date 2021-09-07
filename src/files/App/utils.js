@@ -8,6 +8,7 @@ const translatedOptions = initTranslateOptions()
 const handleSpanPosition = inithandleSpanPosition()
 
 const handleTimeController = initTimeController()
+const eficiencyController = initEficiencyController()
 
 const utils = {
   changeStringToArray(refText = ''){
@@ -75,7 +76,8 @@ const utils = {
       // console.log( utils.timeController.totalTime() )
 
       const divTime = document.querySelector('.time-area')
-      divTime.innerHTML = `Finalizado em ${(utils.timeController.totalTime()/1000).toFixed(1)} segundos`
+      divTime.innerHTML = `Finalizado em ${(utils.timeController.totalTime()/1000).toFixed(1)} segundos <br/>
+      Com a média de ${utils.timeController.wordsPerMinute()} Palavras por minuto`
       // alert(`Finalizado em ${(utils.timeController.totalTime()/1000).toFixed(1)} segundos`)
     }
     const translateConf = {...translatedOptions.get(), text: hiddenTextarea.value}
@@ -278,20 +280,24 @@ function initTimeController(){
     getInitTime(){
       return initTime
     },
+
     getEndTime(){
       return endTime
     },
+    
     reset(){
       initTime = undefined
       endTime = undefined
       const divTime = document.querySelector('.time-area')
       divTime.innerHTML = ''
     },
+
     start(){
       if(initTime === undefined){
         initTime = Date.now()
       }
     },
+
     end(){
       if(endTime === undefined){
         endTime = Date.now()
@@ -301,8 +307,44 @@ function initTimeController(){
       if(initTime !== undefined && endTime !== undefined){
         return endTime - initTime
       }
+    },
+    wordsPerMinute(){
+      if(this.totalTime()){
+
+        const seconds = (this.totalTime() / 1000).toFixed(1)
+        const baseTextarea = document.querySelector('.base-textarea').textContent
+        const words = baseTextarea.match(/\S+/gi)
+        const wordsCount = words.length
+        const wpm = Math.round( (wordsCount * 60) / seconds )
+        return wpm
+
+      }
     }
   }
+}
+
+function initEficiencyController(){
+  let correctPress = 0
+  let incorrectPress = 0
+  let totalCharacters = 0
+  // let lastCharacter = ''
+  return {
+    log(){
+      console.log(correctPress , incorrectPress, totalCharacters)
+    },
+    init(){
+      correctPress = 0
+      incorrectPress = 0
+      totalCharacters = document.querySelector('.base-textarea').textContent.length
+    },
+    addCorrectPress(){
+      correctPress ++
+    },
+    addIncorrectPress(){
+      incorrectPress ++
+    }
+  }
+
 }
 
 export default utils

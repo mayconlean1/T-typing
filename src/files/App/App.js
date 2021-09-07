@@ -77,7 +77,8 @@ export default () =>{
     
     moveScrollTranslateArea()
 
-    return updateInput(handleBool)
+    updateInput(handleBool)
+    // return updateInput(handleBool)
   }
 
   function closerToggleChackbox(){
