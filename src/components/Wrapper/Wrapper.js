@@ -3,12 +3,11 @@
 import React from 'react'
 import './Wrapper.css'
 import '../../baseStyles.css'
+import LanguageOptions from './componentsWrapper/LanguageOptions'
 
 export default ( {toggleWrapper, changeText} )=>{
 
     // if(!hidden){
-    
-
         return(
             <div className='wrapper'>
                 <div className='translation-options-area'>
@@ -16,16 +15,18 @@ export default ( {toggleWrapper, changeText} )=>{
                         Traduzir para:
                         <br/>
                         <select className='select-lang translateTo'>
-                            <option value='en'>Inglês</option>
-                            <option value='pt' selected>Português</option>
+                            {/* <option value='en'>Inglês</option>
+                            <option value='pt' selected>Português</option> */}
+                            <LanguageOptions />
                         </select>
                     </div>
                     <div className='translation-option'>
                         Texto em: 
                         <br/>
                         <select className='select-lang translateFrom'>
-                            <option value='en'>Inglês</option>
-                            <option value='pt'>Português</option>
+                            {/* <option value='en'>Inglês</option>
+                            <option value='pt'>Português</option> */}
+                             <LanguageOptions automaticOption={true}/>
                         </select>
                     </div>
                     

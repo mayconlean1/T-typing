@@ -22,8 +22,9 @@ app.use((req, res, next)=>{ //config CORS
 app.post('/', async (req,res)=>{
     
     const data = {
-        text : req.body.text || 'Field of translating ',
-        from : req.body.from === undefined ? 'en' :  req.body.from,
+        text : req.body.text || 'Field of translating',
+        // from : req.body.from === undefined ? 'en' :  req.body.from,
+
         to: req.body.to === undefined ? 'pt' :  req.body.to,
     }
     

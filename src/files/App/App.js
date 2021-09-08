@@ -21,7 +21,8 @@ export default () =>{
    
   const [wrapper , setWrapper] = useState(false)
 
-  const [refText , setRefText] = useState(`It seems like the world`)
+  // const [refText , setRefText] = useState(`It seems like the world`)
+  const [refText , setRefText] = useState(`Add text`)
 
   const handleBoolCheckbox = useState(true)
   const [boolCheckbox, setBoolCheckbox] = handleBoolCheckbox
@@ -91,7 +92,8 @@ export default () =>{
   }
 
   return (
-    <>
+    <div className='app'>
+    
       <div className='header'>
         <div className='header-content'>
           <h1>
@@ -106,7 +108,7 @@ export default () =>{
       <div className='main'>
 
         <div className='translate-area'>
-          It seems like the world is growing more and more interested in Juliette Freire, an anonymous woman who has been gaining lots of attention.It seems like the world is growing more and more interested in Juliette Freire, an anonymous woman who has been gaining lots of attention.It seems like the world is growing more and more interested in Juliette Freire, an anonymous woman who has been gaining lots of attention.
+          {/* It seems like the world is growing more and more interested in Juliette Freire, an anonymous woman who has been gaining lots of attention.It seems like the world is growing more and more interested in Juliette Freire, an anonymous woman who has been gaining lots of attention.It seems like the world is growing more and more interested in Juliette Freire, an anonymous woman who has been gaining lots of attention. */}
         </div>
 
         <div className='base-textarea'>
@@ -115,10 +117,11 @@ export default () =>{
         <div className='btn-add-text' onClick={toggleWrapper}>
           Add Text
         </div>
-        <div className='time-area'>tempo</div>
+        <div className='time-area'></div>
       </div>
         {wrapper? 
         <Wrapper toggleWrapper = {toggleWrapper} changeText= {changeText}/> : <div/>}
-    </>
+    
+    </div>
   )
 }

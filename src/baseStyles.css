@@ -1,5 +1,5 @@
 :root{
-    --global-width: 80%;
+    --global-width: 95%;
     --paddingTextarea: 0 1rem 0 1rem;
     --borderRadius : 5px;
     --boxshadow: 5px 5px 10px rgba(0, 0, 0, 0.199);
@@ -16,7 +16,19 @@
   body{
     background-color: rgb(238, 238, 238);
     font-size: large;
-    /* display: flex;
+
+  }
+
+  #root{
+    
+    display: flex;
     align-items: center;
-    justify-content: center; */
+    justify-content:center;
+  }
+
+  .app{
+    
+    width: 50rem;   
+
+    
   }

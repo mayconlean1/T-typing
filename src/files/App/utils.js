@@ -73,11 +73,17 @@ const utils = {
       toggleCheckbox(handleBool, true)
 
       utils.timeController.end()
-      // console.log( utils.timeController.totalTime() )
-
+      
+      const [stringTime, typeTime] = utils.timeController.format()
+      const truncStringTime = stringTime.slice(0,stringTime.length-2)
+      
       const divTime = document.querySelector('.time-area')
-      divTime.innerHTML = `Finalizado em ${(utils.timeController.totalTime()/1000).toFixed(1)} segundos <br/>
-      Com a média de ${utils.timeController.wordsPerMinute()} Palavras por minuto`
+      divTime.innerHTML = `Tempo <strong>${truncStringTime}</strong> (${typeTime}) <br/>
+      Média palavras por minuto  <strong>${utils.timeController.wordsPerMinute()}</strong> <br/>
+      Eficiência <strong>${eficiencyController.result()} %</strong>`
+      // divTime.innerHTML = `Finalizado em ${(utils.timeController.totalTime()/1000).toFixed(1)} segundos <br/>
+      // Média palavras por minuto  ${utils.timeController.wordsPerMinute()} <br/>
+      // Eficiência ${eficiencyController.result()} %`
       // alert(`Finalizado em ${(utils.timeController.totalTime()/1000).toFixed(1)} segundos`)
     }
     const translateConf = {...translatedOptions.get(), text: hiddenTextarea.value}
@@ -306,6 +312,7 @@ function initTimeController(){
     totalTime(){
       if(initTime !== undefined && endTime !== undefined){
         return endTime - initTime
+        // return 16516513203
       }
     },
     wordsPerMinute(){
@@ -317,34 +324,79 @@ function initTimeController(){
         const wordsCount = words.length
         const wpm = Math.round( (wordsCount * 60) / seconds )
         return wpm
+      }
+    },
+    format(type='HMSMS'){
+      // const msTotalTime = 10000025
+      const msTotalTime = this.totalTime()
 
+      if(type === 'HMSMS' && msTotalTime !== undefined){
+        const date = new Date()
+        date.setHours(0)
+        date.setMinutes(0)
+        date.setSeconds(0)
+        date.setMilliseconds(msTotalTime)
+
+        const mountHours = '000'+ date.getHours()
+        const hours = mountHours.substring(mountHours.length -2)
+        const mountMinutes = '00' + date.getMinutes()
+        const minutes = mountMinutes.substring(mountMinutes.length -2)
+        const mountSeconds = '00' + date.getSeconds()
+        const seconds = mountSeconds.substring(mountSeconds.length -2)
+        const mountMiliseconds = '00' + date.getMilliseconds()
+        const miliseconds = mountMiliseconds.substring(mountMiliseconds.length -3)
+
+        const mountTime = `${hours}:${minutes}:${seconds}:${miliseconds}`
+        // const mountTime = '00:02:15:00'
+        const [stringTime, typeTime] = checkTimeValues(mountTime)
+
+        // console.log(stringTime)
+        // return ` ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds()}` 
+
+        return [stringTime, typeTime]
+      }
+
+      function checkTimeValues(mountTime=''){
+        let arrayTime = mountTime.split(':')
+        let stringTime = '00'
+        const typesTime = ['hour', 'minutes', 'seconds' , 'miliseconds']
+        let typeTime 
+        for(let i in arrayTime){
+          const tTime = arrayTime[i]
+          // console.log('teste3', tTime, Number (tTime) > 0 , tTime > 0)
+          if(tTime > 0){
+            stringTime = arrayTime.slice(Number(i))
+            typeTime = typesTime[i]
+            // console.log('teste', stringTime)
+            break
+          }
+        }
+        // console.log('teste1', stringTime ,'teste2', arrayTime)
+        return [stringTime.join(':'), typeTime ]
       }
     }
+
   }
 }
 
 function initEficiencyController(){
-  let correctPress = 0
-  let incorrectPress = 0
   let totalCharacters = 0
-  // let lastCharacter = ''
+  function updateTotalCharacters(){
+    totalCharacters = document.querySelector('.base-textarea').textContent.length
+  }
+  function totalCorrectCharacters(){
+    return document.querySelectorAll('.bg-green').length
+  }
+  // function totalIncorrectCharacters(){
+  //   return document.querySelectorAll('.bg-red').length
+  // }
   return {
-    log(){
-      console.log(correctPress , incorrectPress, totalCharacters)
-    },
-    init(){
-      correctPress = 0
-      incorrectPress = 0
-      totalCharacters = document.querySelector('.base-textarea').textContent.length
-    },
-    addCorrectPress(){
-      correctPress ++
-    },
-    addIncorrectPress(){
-      incorrectPress ++
+    result(){
+      updateTotalCharacters()
+      return ((totalCorrectCharacters() * 100) / totalCharacters).toFixed(2)
     }
   }
-
 }
+
 
 export default utils
