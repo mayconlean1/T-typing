@@ -97,7 +97,7 @@ export default () =>{
       <div className='header'>
         <div className='header-content'>
           <h1>
-            T typing
+            T-typing
           </h1>
           <div className='checkbox-area' hidden= {boolCheckboxArea}>
             <input type='checkbox' id='checkWrite' onClick={closerToggleChackbox} checked = {boolCheckbox}/>Ativar digitação
