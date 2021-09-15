@@ -20,7 +20,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "server": "node server/server.js",
-    "dev-server": "nodemon server/server.js"
+    "dev-server": "nodemon server/server.js",
+    "app": "docker-compose start && react-scripts start"
 
   },
   "eslintConfig": {

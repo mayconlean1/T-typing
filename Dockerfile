@@ -4,7 +4,11 @@ WORKDIR /usr/app
 
 # COPY package*.json ./
 
-RUN npm install -g nodemon
+# RUN npm install -g nodemon 
+# RUN npm install express
+# RUN npm install @vitalets/google-translate-api
+# RUN npm install cors
+
 # RUN npm install
 
 # COPY . .
