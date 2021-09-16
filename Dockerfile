@@ -13,7 +13,7 @@ WORKDIR /usr/app
 
 # COPY . .
 
-EXPOSE 8080
+# EXPOSE 8080
 
 # CMD só usa pra fazer build manual
 # CMD ["npm" , "run", "dev-server"]

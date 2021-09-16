@@ -12,5 +12,12 @@ docker-compose up --build </br>
 npm run app</br>
 
 <h2>Comando sem docker</h2>
-npm run server </br>
-npm start  </br>
+<p>Em terminais diferentes execute:</p>
+npm run translate_server </br>
+npm run app_server  </br>
+
+<p>Navegador Chrome:</p>
+npm run chrome  </br>
+
+<p>Navegador edge:</p>
+npm run edge  </br>

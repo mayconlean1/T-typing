@@ -9,6 +9,7 @@
 <body>
     teste
     <script>
+        const LOCAL = process.env.LOCAL || 'localhost'
         (async ()=>{
     
             const res =  await fetch('http://localhost:8080/',{

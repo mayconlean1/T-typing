@@ -1,5 +1,8 @@
 /* eslint-disable import/no-anonymous-default-export */
 
+const LOCAL = process.env.LOCAL || 'localhost'
+console.log(LOCAL)
+
 let cursor = 0
 let currentChar = ''
 
@@ -161,7 +164,7 @@ function initDebounce( timeout=200 ){
       processingTranslation = true
       
        
-      const res =  await fetch('http://localhost:8080/',{
+      const res =  await fetch(`http://${LOCAL}:8080/`,{
         method: "POST",
         body: JSON.stringify(data),
         headers: { 

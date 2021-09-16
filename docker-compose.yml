@@ -1,12 +1,25 @@
 version: '3.8'
 
 services: 
-  app: 
+  translate_server: 
     build: .
-    command: npm run dev-server
+    # working_dir: /usr/app
+    command: npm run translate_server
     
     ports: 
       - "8080:8080"
+    volumes: 
+      - .:/usr/app
+
+  app_server: 
+    build: .
+    command: npm run app_server
+
+    environment: 
+      - LOCAL=172.25.0.1
+    
+    ports: 
+      - "3000:3000"
     volumes: 
       - .:/usr/app
      

@@ -19,9 +19,21 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "node server/server.js",
-    "dev-server": "nodemon server/server.js",
-    "app": "docker-compose start && react-scripts start"
+
+    "dev-translate_server": "nodemon translate_server/server.js",
+
+    "translate_server": "node translate_server/server.js",
+    "app_server":"node server.js",
+    "chrome":"start chrome http://localhost:3000/",
+    "edge" : "start msedge http://localhost:3000/",
+    
+    "build-conteiners": "docker-compose up --build",
+    
+    "start-conteiners": "docker-compose start",
+    "stop-conteiners": "docker-compose stop",
+
+    "dev-app": "docker-compose start && react-scripts start",
+    "app": "docker-compose start && start chrome http://localhost:3000/"
 
   },
   "eslintConfig": {
